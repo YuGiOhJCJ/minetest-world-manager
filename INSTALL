@@ -1,0 +1,5 @@
+To build and install this program do:
+$ autoreconf -i
+$ ./configure --prefix=/usr
+$ make
+$ make install DESTDIR=/tmp/minetest-world-manager

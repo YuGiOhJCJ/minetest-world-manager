@@ -1,0 +1,22 @@
+Minetest World Manager
+
+Minetest World Manager is a program written in C language allowing to manage Minetest [1] worlds.
+
+See the INSTALL file for the instructions on how to build and install this program from the source code.
+
+See the ChangeLog file for the history of changes.
+
+See the TODO file for the list of things left to do.
+
+See the COPYING file for the license of most of the source code [2].
+
+See the AUTHORS file for the contact address.
+
+[1] http://www.minetest.net/
+
+[2] These files are licensed under an other license:
+ * src/minetest_world_manager_base64.c
+ * src/minetest_world_manager_base64.h
+ * src/minetest_world_manager_sha1.c
+ * src/minetest_world_manager_sha1.h
+The corresponding license is attached to the start of these files.
