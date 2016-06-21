@@ -28,21 +28,25 @@ SOFTWARE.
 #include <string.h> /* for memcpy */
 #include "minetest_world_manager_print.h" /* for minetest_world_manager_print_error */
 #include "minetest_world_manager_sha1.h" /* for minetest_world_manager_sha1_t */
+static unsigned char *minetest_world_manager_sha1_get_digest_return(unsigned char *digest);
+static minetest_world_manager_sha1_uint32_t minetest_world_manager_sha1_lrot(minetest_world_manager_sha1_uint32_t x, int bits);
+static int minetest_world_manager_sha1_process(minetest_world_manager_sha1_t *sha1);
+static int minetest_world_manager_sha1_store_big_endian_uint32(unsigned char *byte, minetest_world_manager_sha1_uint32_t num);
 static unsigned char *minetest_world_manager_sha1_get_digest_return(unsigned char *digest)
 {
 	if(digest != NULL)
 		free(digest);
 	return NULL;
 }
-static Uint32 minetest_world_manager_sha1_lrot(Uint32 x, int bits)
+static minetest_world_manager_sha1_uint32_t minetest_world_manager_sha1_lrot(minetest_world_manager_sha1_uint32_t x, int bits)
 {
 	return (x << bits) | (x >> (32 - bits));
 }
 static int minetest_world_manager_sha1_process(minetest_world_manager_sha1_t *sha1)
 {
 	int t;
-	Uint32 a, b, c, d, e, K, f, W[80];
-	Uint32 temp;
+	minetest_world_manager_sha1_uint32_t a, b, c, d, e, k, f, w[80];
+	minetest_world_manager_sha1_uint32_t temp;
 	if(sha1->unprocessed_bytes != 64)
 	{
 		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to process SHA1 because 'sha1->unprocessed_bytes' is not equal to 64.");
@@ -54,32 +58,32 @@ static int minetest_world_manager_sha1_process(minetest_world_manager_sha1_t *sh
 	d = sha1->h3;
 	e = sha1->h4;
 	for(t = 0; t < 16; t++)
-		W[t] = (sha1->bytes[t * 4] << 24) + (sha1->bytes[t * 4 + 1] << 16) + (sha1->bytes[t * 4 + 2] << 8) + sha1->bytes[t * 4 + 3];
+		w[t] = (sha1->bytes[t * 4] << 24) + (sha1->bytes[t * 4 + 1] << 16) + (sha1->bytes[t * 4 + 2] << 8) + sha1->bytes[t * 4 + 3];
 	for(; t< 80; t++)
-		W[t] = minetest_world_manager_sha1_lrot(W[t-3] ^ W[t-8] ^ W[t-14] ^ W[t-16], 1);
+		w[t] = minetest_world_manager_sha1_lrot(w[t-3] ^ w[t-8] ^ w[t-14] ^ w[t-16], 1);
 	for(t = 0; t < 80; t++)
 	{
 		if(t < 20)
 		{
-			K = 0x5a827999;
+			k = 0x5a827999;
 			f = (b & c) | ((b ^ 0xFFFFFFFF) & d);
 		}
 		else if(t < 40)
 		{
-			K = 0x6ed9eba1;
+			k = 0x6ed9eba1;
 			f = b ^ c ^ d;
 		}
 		else if(t < 60)
 		{
-			K = 0x8f1bbcdc;
+			k = 0x8f1bbcdc;
 			f = (b & c) | (b & d) | (c & d);
 		}
 		else
 		{
-			K = 0xca62c1d6;
+			k = 0xca62c1d6;
 			f = b ^ c ^ d;
 		}
-		temp = minetest_world_manager_sha1_lrot(a, 5) + f + e + W[t] + K;
+		temp = minetest_world_manager_sha1_lrot(a, 5) + f + e + w[t] + k;
 		e = d;
 		d = c;
 		c = minetest_world_manager_sha1_lrot(b, 30);
@@ -94,7 +98,7 @@ static int minetest_world_manager_sha1_process(minetest_world_manager_sha1_t *sh
 	sha1->unprocessed_bytes = 0;
 	return 0;
 }
-static int minetest_world_manager_sha1_store_big_endian_uint32(unsigned char *byte, Uint32 num)
+static int minetest_world_manager_sha1_store_big_endian_uint32(unsigned char *byte, minetest_world_manager_sha1_uint32_t num)
 {
 	if(byte == NULL)
 	{
@@ -148,8 +152,8 @@ int minetest_world_manager_sha1_add_bytes(minetest_world_manager_sha1_t *sha1, c
 }
 unsigned char *minetest_world_manager_sha1_get_digest(minetest_world_manager_sha1_t *sha1)
 {
-	Uint32 totalBitsL = sha1->size << 3;
-	Uint32 totalBitsH = sha1->size >> 29;
+	minetest_world_manager_sha1_uint32_t total_bits_l = sha1->size << 3;
+	minetest_world_manager_sha1_uint32_t total_bits_h = sha1->size >> 29;
 	unsigned char footer[64] =
 	{
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -176,12 +180,12 @@ unsigned char *minetest_world_manager_sha1_get_digest(minetest_world_manager_sha
 		return minetest_world_manager_sha1_get_digest_return(digest);
 	}
 	needed_zeros = 56 - sha1->unprocessed_bytes;
-	if(minetest_world_manager_sha1_store_big_endian_uint32(footer + needed_zeros, totalBitsH) == -1)
+	if(minetest_world_manager_sha1_store_big_endian_uint32(footer + needed_zeros, total_bits_h) == -1)
 	{
 		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to store file size (in bits) in big-endian format for SHA1.");
 		return minetest_world_manager_sha1_get_digest_return(digest);
 	}
-	if(minetest_world_manager_sha1_store_big_endian_uint32(footer + needed_zeros + 4, totalBitsL) == -1)
+	if(minetest_world_manager_sha1_store_big_endian_uint32(footer + needed_zeros + 4, total_bits_l) == -1)
 	{
 		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to store file size (in bits) in big-endian format for SHA1.");
 		return minetest_world_manager_sha1_get_digest_return(digest);
@@ -221,9 +225,9 @@ unsigned char *minetest_world_manager_sha1_get_digest(minetest_world_manager_sha
 }
 int minetest_world_manager_sha1_initialize(minetest_world_manager_sha1_t *sha1)
 {
-	if(sizeof(Uint32) * 5 != 20)
+	if(sizeof(minetest_world_manager_sha1_uint32_t) * 5 != 20)
 	{
-		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to initialize SHA1 because the size of Uint32 is not correct.");
+		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to initialize SHA1 because the size of minetest_world_manager_sha1_uint32_t is not correct.");
 		return -1;
 	}
 	sha1->h0 = 0x67452301;

@@ -1,3 +1,166 @@
+2016-06-21  YuGiOhJCJ  <yugiohjcj@1s.fr>
+
+	* Makefile.am: Modified file (update the rule of the "maintainer-clean-local" target to remove all the "Makefile.in" files recursively).
+
+	* NEWS: Modified file (add the "Support the new passwords with the SRP protocol." line because this is an important new feature).
+
+	* README: Modified file (add the "* src/minetest_world_manager_srp.c" line because this file is under an other license).
+
+	* README: Modified file (add the "* src/minetest_world_manager_srp.h" line because this file is under an other license).
+
+	* TODO: Modified file (remove the "Support the new passwords with the SRP protocol." line because this task is done).
+
+	* configure.ac: Modified file (replace "20160530" by "20160621").
+
+	* configure.ac: Modified file (check for the "ctype.h" header because it is used by the code).
+
+	* configure.ac: Modified file (check for the "gmp.h" header because it is used by the code).
+
+	* configure.ac: Modified file (check for the "openssl/sha.h" header because it is used by the code).
+
+	* configure.ac: Modified file (check for the "gmp" library because it is used by the code).
+
+	* configure.ac: Modified file (check for the "crypto" library because it is used by the code).
+
+	* configure.ac: Modified file (add an URL in the error messages when there is a missing header or library).
+
+	* src/Makefile.am: Modified file (add the "minetest_world_manager_password.c" file because it is used by the code).
+
+	* src/Makefile.am: Modified file (add the "minetest_world_manager_srp.c" file because it is used by the code).
+
+	* src/Makefile.am: Modified file (add the "-lgmp" option because it is used by the code).
+
+	* src/Makefile.am: Modified file (add the "-lcrypto" option because it is used by the code).
+
+	* src/Makefile.in: Deleted file (because it has been added by mistake and is useless).
+
+	* src/minetest_world_manager_base64.c: Modified file (replace "minetest_world_manager_base64.cpp" by "minetest_world_manager_base64.c").
+
+	* src/minetest_world_manager_base64.c: Modified file (include the "ctype.h" header because it is used by the code).
+
+	* src/minetest_world_manager_base64.c: Modified file (include the "string.h" header because it is used by the code).
+
+	* src/minetest_world_manager_base64.c: Modified file (add the "minetest_world_manager_base64_chars" global variable).
+
+	* src/minetest_world_manager_base64.c(minetest_world_manager_base64_is_base64): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_base64.c(minetest_world_manager_base64_is_base64): Modified file (add the definition of this static function).
+
+	* src/minetest_world_manager_base64.c(minetest_world_manager_base64_decode): Modified file (add the definition of this function).
+
+	* src/minetest_world_manager_base64.c(minetest_world_manager_base64_encode): Modified file (remove the "base64_chars" local variable).
+
+	* src/minetest_world_manager_base64.c(minetest_world_manager_base64_encode): Modified file (replace "base64_chars" by "minetest_world_manager_base64_chars").
+
+	* src/minetest_world_manager_base64.c(minetest_world_manager_base64_encode): Modified file (check if "ret" is not equal to NULL).
+
+	* src/minetest_world_manager_base64.h(minetest_world_manager_base64_decode): Modified file (add the declaration of this function).
+
+	* src/minetest_world_manager_main.c(minetest_world_manager_main_exit): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_main.c(minetest_world_manager_main_variables_initialize): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_password.c: Added file (contains the definitions of password functions).
+
+	* src/minetest_world_manager_password.h: Added file (contains the declarations of password functions).
+
+	* src/minetest_world_manager_player.c: Modified file (include the "minetest_world_manager_password.h" header because it is used by the code).
+
+	* src/minetest_world_manager_player.c: Modified file (include the "minetest_world_manager_srp.h" header because it is used by the code).
+
+	* src/minetest_world_manager_player.c: Modified file (include the "minetest_world_manager_string.h" header because it is used by the code).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "base64_key" parameter to this function).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "base64_password" parameter to this function).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "base64_password_to_check" parameter to this function).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "base64_salt" parameter to this function).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "base64_srp_key" parameter to this function).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "base64_srp_salt" parameter to this function).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "name_lower" parameter to this function).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (add the "srp_key" parameter to this function).
+	
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "base64_key" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "base64_password" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "base64_password_to_check" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "base64_salt" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "base64_srp_key" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "base64_srp_salt" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "name_lower" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected_return): Modified file (free the "srp_key" variable).
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected): Modified file (replace "Unable to encrypt the password because the name is not provided" by "Unable to check the password because the provided name is null").
+
+	* src/minetest_world_manager_player.c(minetest_world_manager_player_is_selected): Modified file (handle the case of a password with the SRP protocol).
+
+	* src/minetest_world_manager_print.c(minetest_world_manager_print_help): Modified file (replace "set PASSWORD as a hashed password (encrypted with sha1 then encoded with base64)" by "set PASSWORD as an encrypted password encoded with base64").
+
+	* src/minetest_world_manager_print.c(minetest_world_manager_print_help): Modified file (update the examples in order to use the current date).
+
+	* src/minetest_world_manager_print.c(minetest_world_manager_print_help): Modified file (update the examples in order to use a password with the SRP protocol).
+
+	* src/minetest_world_manager_print.c(minetest_world_manager_print_help): Modified file (replace "hashed password" by "encrypted and encoded password").
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_get_digest_return): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_lrot): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_process): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_store_big_endian_uint32): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_sha1.c: Modified file (replace "Uint32" by "minetest_world_manager_sha1_uint32_t").
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_process): Modified file (replace "W" by "w").
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_process): Modified file (replace "K" by "k").
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_get_digest): Modified file (replace "totalBitsL" by "total_bits_l").
+
+	* src/minetest_world_manager_sha1.c(minetest_world_manager_sha1_get_digest): Modified file (replace "totalBitsH" by "total_bits_h").
+
+	* src/minetest_world_manager_sha1.h: Modified file (replace "Uint32" by "minetest_world_manager_sha1_uint32_t").
+
+	* src/minetest_world_manager_srp.c: Added file (contains the definitions of SRP functions).
+
+	* src/minetest_world_manager_srp.h: Added file (contains the declarations of SRP functions).
+
+	* src/minetest_world_manager_string.c: Modified file (include the "ctype.h" header because it is used by the code).
+
+	* src/minetest_world_manager_string.c: Modified file (include the "string.h" header because it is used by the code).
+
+	* src/minetest_world_manager_string.c(minetest_world_manager_string_get_field): Modified file (add the "delim" parameter to this function).
+
+	* src/minetest_world_manager_string.c(minetest_world_manager_string_get_field): Modified file (remove the "delim" local variable).
+
+	* src/minetest_world_manager_string.c(minetest_world_manager_string_get_field): Modified file (remove the "\n" character at the end of error messages).
+
+	* src/minetest_world_manager_string.c(minetest_world_manager_string_get_field): Modified file (replace "pos_end != pos_start" by "string[pos_start] != delim && string[pos_end] != delim").
+
+	* src/minetest_world_manager_string.c(minetest_world_manager_string_tolower): Modified file (add the definition of this function).
+
+	* src/minetest_world_manager_string.h(minetest_world_manager_string_get_field): Modified file (add the "delim" parameter to this function).
+
+	* src/minetest_world_manager_string.h(minetest_world_manager_string_tolower): Modified file (add the declaration of this function).
+
+	* src/minetest_world_manager_world.c(minetest_world_manager_world_manage_return): Modified file (add the declaration of this static function).
+
+	* src/minetest_world_manager_world.c(minetest_world_manager_world_manage_return): Modified file (use ":" for the third parameter of the "minetest_world_manager_string_get_field" function call).
+
+
 2016-05-30  YuGiOhJCJ  <yugiohjcj@1s.fr>
 
 	* *: First version.

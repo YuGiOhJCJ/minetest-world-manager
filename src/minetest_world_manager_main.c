@@ -31,6 +31,8 @@ typedef struct
 	char *start_time;
 	char *time;
 } minetest_world_manager_main_variables_t;
+static void minetest_world_manager_main_exit(int status, minetest_world_manager_main_variables_t *variables);
+static void minetest_world_manager_main_variables_initialize(minetest_world_manager_main_variables_t *variables);
 static void minetest_world_manager_main_exit(int status, minetest_world_manager_main_variables_t *variables)
 {
 	if(variables->name != NULL)

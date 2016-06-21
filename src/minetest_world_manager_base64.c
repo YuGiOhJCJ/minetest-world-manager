@@ -1,5 +1,5 @@
 /*
-minetest_world_manager_base64.cpp
+minetest_world_manager_base64.c
 
 This is an altered source version.
 This is not the original source code written by René Nyffenegger.
@@ -28,12 +28,93 @@ freely, subject to the following restrictions:
 YuGiOhJCJ <yugiohjcj@1s.fr>
 René Nyffenegger <rene.nyffenegger@adp-gmbh.ch>
 */
+#include <ctype.h> /* for isalnum */
 #include <stdlib.h> /* for NULL */
+#include <string.h> /* for strlen */
 #include "minetest_world_manager_base64.h" /* for minetest_world_manager_base64_encode */
 #include "minetest_world_manager_print.h" /* for minetest_world_manager_print_error */
+static const char *minetest_world_manager_base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static int minetest_world_manager_base64_is_base64(unsigned char c);
+static int minetest_world_manager_base64_is_base64(unsigned char c)
+{
+	return (isalnum(c) || (c == '+') || (c == '/'));
+}
+char *minetest_world_manager_base64_decode(const char *encoded_string, size_t *ret_size)
+{
+	int in_len = strlen(encoded_string);
+	int i = 0;
+	int j = 0;
+	int in_ = 0;
+	unsigned char char_array_4[4], char_array_3[3];
+	char *ret = NULL;
+	*ret_size = 0;
+	while(in_len-- && (encoded_string[in_] != '=') && minetest_world_manager_base64_is_base64(encoded_string[in_]))
+	{
+		char_array_4[i++] = encoded_string[in_]; in_++;
+		if(i ==4)
+		{
+			for(i = 0; i <4; i++)
+			{
+				char *character = strchr(minetest_world_manager_base64_chars, char_array_4[i]);
+				if(character == NULL)
+				{
+					minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to get the character for the base64 decoded value.");
+					return NULL;
+				}
+				char_array_4[i] = character - minetest_world_manager_base64_chars;
+			}
+			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+			char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+			for(i = 0; (i < 3); i++)
+			{
+				(*ret_size)++;
+				ret = realloc(ret, sizeof(char) * (*ret_size + 1));
+				if(ret == NULL)
+				{
+					minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to allocate memory for the base64 decoded value.");
+					return NULL;
+				}
+				ret[*ret_size - 1] = char_array_3[i];
+			}
+			i = 0;
+		}
+	}
+	if(i)
+	{
+		for(j = i; j <4; j++)
+			char_array_4[j] = 0;
+		for(j = 0; j <4; j++)
+		{
+			char *character = strchr(minetest_world_manager_base64_chars, char_array_4[j]);
+			if(character == NULL)
+			{
+				minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to get the character for the base64 decoded value.");
+				return NULL;
+			}
+			char_array_4[j] = character - minetest_world_manager_base64_chars;
+		}
+		char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+		char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+		char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+		for(j = 0; (j < i - 1); j++)
+		{
+			(*ret_size)++;
+			ret = realloc(ret, sizeof(char) * (*ret_size + 1));
+			if(ret == NULL)
+			{
+				minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to allocate memory for the base64 decoded value.");
+				return NULL;
+			}
+			ret[*ret_size - 1] = char_array_3[j];
+		}
+	}
+	if(ret != NULL)
+		ret[*ret_size] = '\0';
+	return ret;
+}
 char *minetest_world_manager_base64_encode(unsigned char const *bytes_to_encode, unsigned int in_len)
 {
-	const char *base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	char *ret = NULL;
 	int ret_size = 0;
 	int i = 0;
@@ -57,8 +138,8 @@ char *minetest_world_manager_base64_encode(unsigned char const *bytes_to_encode,
 				{
 					minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to allocate memory for the base64 encoded value.");
 					return NULL;
-				}	
-				ret[ret_size - 1] = base64_chars[char_array_4[i]];
+				}
+				ret[ret_size - 1] = minetest_world_manager_base64_chars[char_array_4[i]];
 			}
 			i = 0;
 		}
@@ -79,10 +160,11 @@ char *minetest_world_manager_base64_encode(unsigned char const *bytes_to_encode,
 			{
 				minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to allocate memory for the base64 encoded value.");
 				return NULL;
-			}	
-			ret[ret_size - 1] = base64_chars[char_array_4[j]];
+			}
+			ret[ret_size - 1] = minetest_world_manager_base64_chars[char_array_4[j]];
 		}
 	}
-	ret[ret_size] = '\0';
+	if(ret != NULL)
+		ret[ret_size] = '\0';
 	return ret;
 }

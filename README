@@ -19,4 +19,6 @@ See the AUTHORS file for the contact address.
  * src/minetest_world_manager_base64.h
  * src/minetest_world_manager_sha1.c
  * src/minetest_world_manager_sha1.h
+ * src/minetest_world_manager_srp.c
+ * src/minetest_world_manager_srp.h
 The corresponding license is attached to the start of these files.

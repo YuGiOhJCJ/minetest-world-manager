@@ -14,5 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 bin_PROGRAMS = minetest-world-manager
-minetest_world_manager_SOURCES = minetest_world_manager_main.c minetest_world_manager_base64.c minetest_world_manager_file.c minetest_world_manager_player.c minetest_world_manager_print.c minetest_world_manager_sha1.c minetest_world_manager_string.c minetest_world_manager_time.c minetest_world_manager_world.c
+minetest_world_manager_SOURCES = minetest_world_manager_main.c minetest_world_manager_base64.c minetest_world_manager_file.c minetest_world_manager_password.c minetest_world_manager_player.c minetest_world_manager_print.c minetest_world_manager_sha1.c minetest_world_manager_srp.c minetest_world_manager_string.c minetest_world_manager_time.c minetest_world_manager_world.c
 minetest_world_manager_CFLAGS = @MAINTAINER_CFLAGS@
+minetest_world_manager_LDFLAGS = -lgmp -lcrypto

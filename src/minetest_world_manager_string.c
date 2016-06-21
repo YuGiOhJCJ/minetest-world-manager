@@ -15,12 +15,13 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <ctype.h> /* for tolower */
 #include <stdlib.h> /* for NULL */
+#include <string.h> /* for strlen */
 #include "minetest_world_manager_print.h" /* for minetest_world_manager_print_error */
 #include "minetest_world_manager_string.h" /* for minetest_world_manager_string_get_field */
-char *minetest_world_manager_string_get_field(const char *string, int field_number)
+char *minetest_world_manager_string_get_field(const char *string, int field_number, char delim)
 {
-	const char delim = ':';
 	char *field = NULL;
 	int field_current_number = 1;
 	int pos_start = 0;
@@ -34,7 +35,7 @@ char *minetest_world_manager_string_get_field(const char *string, int field_numb
 			field_current_number++;
 		if(string[pos_current] == '\0')
 		{
-			minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to find the field number \"%d\" in the \"%s\" string.\n", field_number, string);
+			minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to find the field number \"%d\" in the \"%s\" string.", field_number, string);
 			return NULL;
 		}
 		pos_current++;
@@ -52,15 +53,15 @@ char *minetest_world_manager_string_get_field(const char *string, int field_numb
 		pos_current++;
 	}
 	pos_end = pos_current;
-	if(pos_end != pos_start)
+	if(string[pos_start] != delim && string[pos_end] != delim)
 		field_size = pos_end - pos_start + 1;
 	field = malloc(sizeof(char) * (field_size + 1));
 	if(field == NULL)
 	{
-		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to allocate memory for the field number \"%d\" of the \"%s\" string.\n", field_number, string);
+		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to allocate memory for the field number \"%d\" of the \"%s\" string.", field_number, string);
 		return NULL;
 	}
-	if(pos_end != pos_start)
+	if(string[pos_start] != delim && string[pos_end] != delim)
 	{
 		pos_current = pos_start;
 		while(pos_current <= pos_end)
@@ -79,4 +80,21 @@ const char *minetest_world_manager_string_plural(const char *word_singular, cons
 		return word_singular;
 	else
 		return word_plural;
+}
+char *minetest_world_manager_string_tolower(const char *string)
+{
+	int index = 0;
+	int len = 0;
+	char *result = NULL;
+	len = strlen(string);
+	result = malloc(sizeof(char) * (len + 1));
+	if(result == NULL)
+	{
+		minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to allocate memory for the string containing lower case letters.");
+		return NULL;
+	}
+	for(; index < len; index++)
+		result[index] = tolower(string[index]);
+	result[len] = '\0';
+	return result;
 }

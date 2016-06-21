@@ -24,6 +24,7 @@
 #include "minetest_world_manager_player.h" /* for minetest_world_manager_player_is_selected */
 #include "minetest_world_manager_print.h" /* for minetest_world_manager_print_error */
 #include "minetest_world_manager_string.h" /* for minetest_world_manager_string_get_field */
+static int minetest_world_manager_world_manage_return(int value, char *file_path, char *file_path_new, FILE *file, FILE *file_new, char *line, char *field_name, char *field_password, char *field_privileges, char *field_time);
 static int minetest_world_manager_world_manage_return(int value, char *file_path, char *file_path_new, FILE *file, FILE *file_new, char *line, char *field_name, char *field_password, char *field_privileges, char *field_time)
 {
 	if(file_path != NULL)
@@ -138,25 +139,25 @@ int minetest_world_manager_world_manage(const char *world_path, int base64, int 
 			line = NULL;
 			break;
 		}
-		field_name = minetest_world_manager_string_get_field(line, 1);
+		field_name = minetest_world_manager_string_get_field(line, 1, ':');
 		if(field_name == NULL)
 		{
 			minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to get the name from the \"%s\" line of the \"%s\" file.", line, file_path);
 			return minetest_world_manager_world_manage_return(-1, file_path, file_path_new, file, file_new, line, field_name, field_password, field_privileges, field_time);
 		}
-		field_password = minetest_world_manager_string_get_field(line, 2);
+		field_password = minetest_world_manager_string_get_field(line, 2, ':');
 		if(field_password == NULL)
 		{
 			minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to get the password from the \"%s\" line of the \"%s\" file.", line, file_path);
 			return minetest_world_manager_world_manage_return(-1, file_path, file_path_new, file, file_new, line, field_name, field_password, field_privileges, field_time);
 		}
-		field_privileges = minetest_world_manager_string_get_field(line, 3);
+		field_privileges = minetest_world_manager_string_get_field(line, 3, ':');
 		if(field_privileges == NULL)
 		{
 			minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to get the privileges from the \"%s\" line of the \"%s\" file.", line, file_path);
 			return minetest_world_manager_world_manage_return(-1, file_path, file_path_new, file, file_new, line, field_name, field_password, field_privileges, field_time);
 		}
-		field_time = minetest_world_manager_string_get_field(line, 4);
+		field_time = minetest_world_manager_string_get_field(line, 4, ':');
 		if(field_time == NULL)
 		{
 			minetest_world_manager_print_error(__FILE__, __LINE__, "Unable to get the time from the \"%s\" line of the \"%s\" file.", line, file_path);

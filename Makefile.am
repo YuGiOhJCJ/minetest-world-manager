@@ -19,4 +19,4 @@ dist_doc_DATA = AUTHORS ChangeLog COPYING INSTALL NEWS README TODO
 edit:
 	gvim -p `find . -name *.c -o -name *.h -o -name Makefile.am -o -name configure.ac | sort` $(dist_doc_DATA)
 maintainer-clean-local:
-	rm -rfv aclocal.m4 compile configure depcomp install-sh Makefile.in missing
+	rm -rfv aclocal.m4 compile configure depcomp install-sh missing `find . -name Makefile.in`

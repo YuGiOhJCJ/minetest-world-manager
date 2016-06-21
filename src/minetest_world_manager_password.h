@@ -15,9 +15,9 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef minetest_world_manager_string_h
-#define minetest_world_manager_string_h
-char *minetest_world_manager_string_get_field(const char *string, int field_number, char delim);
-const char *minetest_world_manager_string_plural(const char *word_singular, const char *word_plural, int number);
-char *minetest_world_manager_string_tolower(const char *string);
+#ifndef minetest_world_manager_password_h
+#define minetest_world_manager_password_h
+char *minetest_world_manager_password_get_base64_key(const char *password);
+char *minetest_world_manager_password_get_base64_salt(const char *password);
+int minetest_world_manager_password_has_base64_key_and_base64_salt(const char *password);
 #endif

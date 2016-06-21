@@ -26,13 +26,13 @@ SOFTWARE.
 */
 #ifndef minetest_world_manager_sha1_h
 #define minetest_world_manager_sha1_h
-typedef unsigned int Uint32;
+typedef unsigned int minetest_world_manager_sha1_uint32_t;
 typedef struct
 {
-	Uint32 h0, h1, h2, h3, h4;
+	minetest_world_manager_sha1_uint32_t h0, h1, h2, h3, h4;
 	unsigned char bytes[64];
 	int unprocessed_bytes;
-	Uint32 size;
+	minetest_world_manager_sha1_uint32_t size;
 } minetest_world_manager_sha1_t;
 int minetest_world_manager_sha1_add_bytes(minetest_world_manager_sha1_t *sha1, const char *data, int num);
 unsigned char *minetest_world_manager_sha1_get_digest(minetest_world_manager_sha1_t *sha1);

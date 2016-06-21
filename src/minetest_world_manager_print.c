@@ -44,7 +44,7 @@ void minetest_world_manager_print_help()
 	printf("\n");
 	printf("Options:\n");
 	printf("\t-b, --base64-password\n");
-	printf("\t\tset PASSWORD as a hashed password (encrypted with sha1 then encoded with base64) instead of a raw password\n");
+	printf("\t\tset PASSWORD as an encrypted password encoded with base64 instead of a raw password\n");
 	printf("\t-d, --display-players\n");
 	printf("\t\tdisplay the selected player(s)\n");
 	printf("\t-e, --end-time=END-TIME\n");
@@ -73,11 +73,11 @@ void minetest_world_manager_print_help()
 	printf("\t\tdisplay all the players in the specified world\n");
 	printf("\t%s -dr ~/.minetest/worlds/myfirstworld ~/.minetest/worlds/mysecondworld\n", minetest_world_manager_print_program_filename);
 	printf("\t\tdisplay and remove all the players in the specified worlds\n");
-	printf("\t%s -dn MyName -p MyPassword -q shout,interact -t 2016-05-28T10:29:36Z ~/.minetest/worlds/myworld\n", minetest_world_manager_print_program_filename);
+	printf("\t%s -dn MyName -p MyPassword -q shout,interact -t 2016-06-21T17:53:33Z ~/.minetest/worlds/myworld\n", minetest_world_manager_print_program_filename);
 	printf("\t\tdisplay the player(s) having the specified name, raw password, privileges and formatted last login time in the specified world\n");
-	printf("\t%s -dbun MyName -p OJqGCRr0FgzfkicVkrO2P52dgDU -q shout,interact -t 1464431376 ~/.minetest/worlds/myworld\n", minetest_world_manager_print_program_filename);
-	printf("\t\tdisplay the player(s) having the specified name, hashed password, privileges and unformatted last login time in the specified world\n");
-	printf("\t%s -rs 2016-05-28T00:00:00Z -e 2016-05-28T23:59:59Z ~/.minetest/worlds/myworld\n", minetest_world_manager_print_program_filename);
+	printf("\t%s -dbun MyName -p \"#1#F/pzuCHU2mNqcEfQMWGPpw#Viqzle5l/EguzI8NqwrUNgAd0S008rCZv7E//ekeWG726FN1V4SZClEgwUK+lVBW3cTesEIUhPutycVwMh5LwjCOc/tcON4rVzjNFM37wHHj8qD/BWhSJuTWuJ16vNeVkLo5FfVCK4yHkf2HlIBrb5F3J6xi2sxn4AB482XpXceoEYujneb7z+iwsCJt/QJhLYqslYBEQ4kNYUeQDH8W/ldk/f5EonQ876dn7PwxDZigDzdjYAH+z0X2Yz25K2HL/NrVox7WNgjiuHuR0scxZECEy9+n4GqZyqJyYzk/Qv6C/1HxGqJXeuet0RtcCpAOiwY3NE96rf3BgNejB2UOZw\" -q shout,interact -t 1466524413 ~/.minetest/worlds/myworld\n", minetest_world_manager_print_program_filename);
+	printf("\t\tdisplay the player(s) having the specified name, encrypted and encoded password, privileges and unformatted last login time in the specified world\n");
+	printf("\t%s -rs 2016-06-21T00:00:00Z -e 2016-06-21T23:59:59Z ~/.minetest/worlds/myworld\n", minetest_world_manager_print_program_filename);
 	printf("\t\tremove the players(s) having the last login time between the two specified formatted times in the specified world\n");
 	printf("\n");
 	printf("Report bugs to %s <%s> %s.\n", minetest_world_manager_print_author_name, minetest_world_manager_print_author_mail, minetest_world_manager_print_author_url);
